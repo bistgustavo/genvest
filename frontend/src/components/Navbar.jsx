@@ -1,86 +1,218 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {assets} from '../assets/assest.js';
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { assets } from "../assets/assest";
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [lastScrollTop, setLastScrollTop] = useState(0);
-  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // This should be managed by your auth system
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollTop > lastScrollTop) {
-        setIsHeaderHidden(true);
-      } else {
-        setIsHeaderHidden(false);
-      }
-      setLastScrollTop(scrollTop <= 0 ? 0 : scrollTop);
-    };
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/about", label: "About" },
+    { path: "/insights", label: "Insights" },
+    { path: "/market-data", label: "Market Data" },
+    { path: "/discussion", label: "Discussion" },
+    { path: "/contact", label: "Contact" },
+  ];
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollTop]);
+  const isActivePath = (path) => {
+    if (path === "/" && location.pathname !== "/") {
+      return false;
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  const scroll = () => {
+    scrollTo(0, 0);
+  };
 
   return (
-    <header className={`fixed top-0 w-full bg-white border-b border-gray-200 shadow-sm z-50 transition-transform duration-400 ${isHeaderHidden ? '-translate-y-full' : 'translate-y-0'}`}>
-      <div className="container mx-auto px-4 py-1 max-w-7xl">
-        <div className="flex justify-between items-center">
-          <div className="flex-shrink-0">
-            <Link to="/">
-              <img
-                src={assets.logo}
-                alt="Genvest Ventures Pvt. Ltd. Logo"
-                className="h-20 w-auto"
-              />
-            </Link>
+    <nav className="fixed w-full bg-white shadow-sm z-50">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <Link onClick={scroll} to="/" className="flex items-center">
+            <img src={assets.logo} alt="Genvest Logo" className="h-10 w-auto" />
+            <span className="ml-2 text-2xl font-bold text-teal-900">
+              Genvest
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={scroll}
+                className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+                  isActivePath(link.path)
+                    ? "text-teal-600"
+                    : "text-gray-600 hover:text-teal-600"
+                }`}
+              >
+                {link.label}
+                {isActivePath(link.path) && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-teal-600"
+                    initial={false}
+                  />
+                )}
+              </Link>
+            ))}
+
+            {/* Auth Button or Profile */}
+            <div className="relative">
+              {isLoggedIn ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowProfileMenu(!showProfileMenu)}
+                    className="flex items-center space-x-2"
+                  >
+                    <img
+                      src="/assets/avatar.jpg"
+                      alt="User Avatar"
+                      className="w-8 h-8 rounded-full border-2 border-teal-600"
+                    />
+                    <svg
+                      className={`w-4 h-4 text-gray-600 transition-transform ${
+                        showProfileMenu ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  <AnimatePresence>
+                    {showProfileMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2"
+                      >
+                        <Link
+                          to="/profile"
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <FaUser className="w-4 h-4 mr-3" />
+                          Profile
+                        </Link>
+                        <Link
+                          to="/settings"
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <FaCog className="w-4 h-4 mr-3" />
+                          Settings
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setIsLoggedIn(false);
+                            scroll();
+                          }}
+                          className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                        >
+                          <FaSignOutAlt className="w-4 h-4 mr-3" />
+                          Sign Out
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
+                >
+                  Sign In
+                </Link>
+              )}
+            </div>
           </div>
 
-          <nav className={`md:flex ${isMenuOpen ? 'block' : 'hidden'} absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none`}>
-            <ul onClick={() => setIsMenuOpen(false)} className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6 p-4 md:p-0">
-              <li><Link to="/" className="block px-3 py-2 text-gray-700 hover:text-teal-800 hover:bg-teal-50 rounded-md font-medium">Home</Link></li>
-              <li><Link to="/about" className="block px-3 py-2 text-gray-700 hover:text-teal-800 hover:bg-teal-50 rounded-md font-medium">About Us</Link></li>
-              <li><Link to="/services" className="block px-3 py-2 text-gray-700 hover:text-teal-800 hover:bg-teal-50 rounded-md font-medium">Services</Link></li>
-              <li><Link to="/market-data" className="block px-3 py-2 text-gray-700 hover:text-teal-800 hover:bg-teal-50 rounded-md font-medium">Market Data</Link></li>
-              <li><Link to="/insights" className="block px-3 py-2 text-gray-700 hover:text-teal-800 hover:bg-teal-50 rounded-md font-medium">Insights</Link></li>
-              <li><Link to="/contact" className="block px-3 py-2 text-gray-700 hover:text-teal-800 hover:bg-teal-50 rounded-md font-medium">Contact Us</Link></li>
-              <li><Link to="/discussion" className="block px-3 py-2 text-gray-700 hover:text-teal-800 hover:bg-teal-50 rounded-md font-medium">Discussion</Link></li>
-            </ul>
-          </nav>
-
-          <div className="flex items-center ml-4">
-            {isLoggedIn ? (
-              <Link
-                to="/profile"
-                className="w-10 h-10 rounded-full border-2 border-blue-600 overflow-hidden"
-              >
-                <img
-                  src="https://via.placeholder.com/40"
-                  alt="User Profile"
-                  className="w-full h-full object-cover"
-                />
-              </Link>
-            ) : (
-              <Link
-                to="/login"
-                className="bg-blue-600 text-white px-4 py-2 rounded-md font-bold hover:bg-blue-700 transition-colors"
-              >
-                Login
-              </Link>
-            )}
-          </div>
-
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-gray-600 hover:text-gray-900"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle navigation menu"
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 rounded-lg text-gray-600 hover:text-teal-600 focus:outline-none"
           >
-            {isMenuOpen ? '×' : '☰'}
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {isOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
           </button>
         </div>
       </div>
-    </header>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden border-t border-gray-200"
+          >
+            <div className="container mx-auto px-4 py-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`block py-2 text-base font-medium ${
+                    isActivePath(link.path)
+                      ? "text-teal-600"
+                      : "text-gray-600 hover:text-teal-600"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              {!isLoggedIn && (
+                <Link
+                  to="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block py-2 text-base font-medium text-teal-600"
+                >
+                  Sign In
+                </Link>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
   );
 };
 

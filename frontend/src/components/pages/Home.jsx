@@ -1,184 +1,256 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import InsightsSection from "../InsightsSection.jsx";
+import { motion } from "framer-motion";
+import {
+  PageTransition,
+  FadeIn,
+  SlideUp,
+  ScrollReveal,
+  StaggerContainer,
+  StaggerItem,
+} from "../animations/AnimationWrapper";
+import { assets } from "../../assets/assest";
 
 const Home = () => {
   return (
-    <main className="pt-[133px]">
-      {/* Hero Section */}
-      <section className="text-center py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-teal-900 mb-4">
-            Personalized Investment Strategies for Your Financial Goals
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Genvest offers tailored financial planning and investment advisory
-            to help individuals and families achieve long-term prosperity.
-          </p>
-          <Link
-            to="/contact#consultation-form"
-            className="inline-block bg-teal-800 text-white px-8 py-4 rounded-md font-bold hover:bg-teal-900 transform hover:-translate-y-1 transition-all"
-          >
-            Schedule a Consultation
-          </Link>
-        </div>
-      </section>
-
-      {/* Intro Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-teal-900 mb-8">
-            Your Partner in Financial Growth
-          </h2>
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <p className="text-gray-700">
-              Welcome to Genvest. We believe in{" "}
-              <strong>Turning Ambition into Impact</strong>. Our firm was
-              founded on the principle that expert financial guidance should not
-              only grow your wealth but also empower you to achieve what truly
-              matters. We partner with you to understand your unique aspirations
-              and craft personalized strategies designed for meaningful,
-              real-world results.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold text-teal-800 mb-4">
-                Personalized Approach
-              </h3>
-              <p className="text-gray-600">
-                Custom strategies tailored to your individual goals, risk
-                tolerance, and life circumstances.
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold text-teal-800 mb-4">
-                Education & Transparency
-              </h3>
-              <p className="text-gray-600">
-                We ensure you understand your investments and the 'why' behind
-                our recommendations, fostering clarity and confidence.
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold text-teal-800 mb-4">
-                Proactive Communication & Expert Advice
-              </h3>
-              <p className="text-gray-600">
-                Benefit from regular updates, clear market insights, and easy
-                access to our experienced advisors.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-teal-900 mb-12">
-            Our Core Services
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-teal-800 mb-4">
-                  Portfolio Management
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Strategic and disciplined management of your investment
-                  portfolio to optimize returns and manage risk according to
-                  your objectives.
-                </p>
-                <Link
-                  to="/services#portfolio-management"
-                  className="text-teal-700 hover:text-teal-900 font-medium"
-                >
-                  Learn More →
-                </Link>
+    <PageTransition>
+      <main className="pt-[80px]">
+        {/* Hero Section */}
+        <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-slate-900 via-teal-900 to-slate-900">
+          <div className="absolute inset-0 bg-[url('/assets/pattern.svg')] opacity-10"></div>
+          <FadeIn>
+            <div className="container mx-auto px-4 py-20">
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="text-white space-y-8">
+                  <SlideUp delay={0.2}>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                      Strategic Investment Solutions for{" "}
+                      <span className="text-teal-400">Sustainable Growth</span>
+                    </h1>
+                  </SlideUp>
+                  <SlideUp delay={0.3}>
+                    <p className="text-lg md:text-xl text-gray-300">
+                      Empowering investors with data-driven strategies and
+                      comprehensive market analysis for informed
+                      decision-making.
+                    </p>
+                  </SlideUp>
+                  <SlideUp delay={0.4}>
+                    <div className="flex flex-wrap gap-4">
+                      <Link
+                        to="/contact"
+                        className="px-8 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all font-medium"
+                      >
+                        Schedule Consultation
+                      </Link>
+                      <Link
+                        to="/market-data"
+                        className="px-8 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all font-medium"
+                      >
+                        View Market Insights
+                      </Link>
+                    </div>
+                  </SlideUp>
+                </div>
+                <div className="hidden md:block">
+                  <motion.img
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    src={assets.investment}
+                    alt="Investment Analysis"
+                    className="w-full"
+                  />
+                </div>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-teal-800 mb-4">
-                  Financial Planning
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Comprehensive planning for your future, including retirement,
-                  education savings, wealth transfer, and other major life
-                  goals.
-                </p>
-                <Link
-                  to="/services#financial-planning"
-                  className="text-teal-700 hover:text-teal-900 font-medium"
-                >
-                  Learn More →
-                </Link>
+          </FadeIn>
+        </section>
+
+        {/* Key Metrics Section */}
+        <section className="py-16 bg-white">
+          <ScrollReveal>
+            <div className="container mx-auto px-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div className="text-center">
+                  <h3 className="text-4xl font-bold text-teal-900">$2.5B+</h3>
+                  <p className="text-gray-600 mt-2">Assets Under Management</p>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-4xl font-bold text-teal-900">15+</h3>
+                  <p className="text-gray-600 mt-2">Years of Excellence</p>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-4xl font-bold text-teal-900">5000+</h3>
+                  <p className="text-gray-600 mt-2">Satisfied Clients</p>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-4xl font-bold text-teal-900">98%</h3>
+                  <p className="text-gray-600 mt-2">Client Retention</p>
+                </div>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-teal-800 mb-4">
-                  Investment Advisory
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Ongoing, personalized advice to guide your investment
-                  decisions and help you navigate complex financial markets
-                  effectively.
-                </p>
-                <Link
-                  to="/services#investment-advisory"
-                  className="text-teal-700 hover:text-teal-900 font-medium"
-                >
-                  Learn More →
-                </Link>
+          </ScrollReveal>
+        </section>
+
+        {/* Services Section */}
+        <section className="py-20 bg-slate-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                Comprehensive Investment Solutions
+              </h2>
+              <p className="text-gray-600">
+                Our expertise spans across multiple domains to provide you with
+                holistic financial solutions.
+              </p>
+            </div>
+            <StaggerContainer>
+              <div className="grid md:grid-cols-3 gap-8">
+                {services.map((service, index) => (
+                  <StaggerItem key={index}>
+                    <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                      <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-6">
+                        <service.icon className="w-6 h-6 text-teal-600" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-slate-900 mb-4">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600 mb-6">
+                        {service.description}
+                      </p>
+                      <Link
+                        to={service.link}
+                        className="text-teal-600 font-medium hover:text-teal-700 flex items-center"
+                      >
+                        Learn More
+                        <svg
+                          className="w-4 h-4 ml-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </Link>
+                    </div>
+                  </StaggerItem>
+                ))}
               </div>
+            </StaggerContainer>
+          </div>
+        </section>
+
+        <InsightsSection />
+
+        {/* CTA Section */}
+        <section className="py-20 bg-slate-900">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                Ready to Elevate Your Investment Strategy?
+              </h2>
+              <p className="text-xl text-gray-300 mb-8">
+                Join thousands of successful investors who trust Genvest for
+                their financial future.
+              </p>
+              <Link
+                to="/contact"
+                className="inline-flex items-center px-8 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all font-medium"
+              >
+                Schedule a Consultation
+                <svg
+                  className="w-5 h-5 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      <InsightsSection />
-
-      {/* Testimonials Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-teal-900 mb-8">
-            Client-Centric Approach
-          </h2>
-          <div className="max-w-3xl mx-auto">
-            <blockquote className="text-center italic text-gray-700 text-lg">
-              "Genvest helped us navigate a complex financial landscape with
-              clarity and personalized attention. Their commitment to
-              understanding our goals made all the difference."
-              <footer className="mt-4 text-gray-600 font-medium">
-                - A Valued Client
-              </footer>
-            </blockquote>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-teal-900 text-white text-center">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4">
-            Ready to Turn Your Ambition into Impact?
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            Let Genvest be your trusted partner in achieving your financial
-            aspirations. Contact us today for a personalized consultation.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-block bg-white text-teal-900 px-8 py-4 rounded-md font-bold hover:bg-gray-100 transform hover:-translate-y-1 transition-all"
-          >
-            Get Started Today
-          </Link>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </PageTransition>
   );
 };
+
+const services = [
+  {
+    title: "Portfolio Management",
+    description:
+      "Expert management of diversified investment portfolios tailored to your risk profile and objectives.",
+    icon: ({ className }) => (
+      <svg
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+        />
+      </svg>
+    ),
+    link: "/services/portfolio-management",
+  },
+  {
+    title: "Market Analysis",
+    description:
+      "In-depth market research and analysis to identify optimal investment opportunities.",
+    icon: ({ className }) => (
+      <svg
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+        />
+      </svg>
+    ),
+    link: "/services/market-analysis",
+  },
+  {
+    title: "Wealth Planning",
+    description:
+      "Comprehensive wealth management strategies for long-term financial security.",
+    icon: ({ className }) => (
+      <svg
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    ),
+    link: "/services/wealth-planning",
+  },
+];
 
 export default Home;

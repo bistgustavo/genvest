@@ -16,6 +16,7 @@ import Services from "./components/pages/Services.jsx";
 import Discussion from "./components/pages/Discussion.jsx";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import Signup from "./components/Signup.jsx";
+import Profile from "./components/pages/Profile.jsx";
 
 function App() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function App() {
       {<Navbar />}
       <Toaster position="top-center" />
 
+      <div className="mt-9"></div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -35,6 +37,7 @@ function App() {
         <Route path="/discussion" element={<Discussion />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
 
       <Footer />

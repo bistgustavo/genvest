@@ -1,4 +1,5 @@
 import logo from "./logo.png";
+import investment from "./investment.png";
 // Import all team member images
 import teamMember2 from "./she.png";
 import teamMember1 from "./she.png";
@@ -157,6 +158,7 @@ export const teamMembers = [
 
 export const assets = {
   logo,
+  investment,
   teamMember1,
   teamMember2,
   teamMember3,

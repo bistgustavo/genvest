@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
+
+// Add this constant at the top of your file
+const GOOGLE_SHEETS_URL =
+  "https://script.google.com/macros/s/AKfycbz7JR-ykM5TSEjp5TDM5JEyLSbtoihAD5ZMIcttmhqwR6KPTuHbo-MJ9Ah69GpG3OXEag/exec";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -29,14 +32,25 @@ const Contact = () => {
     setStatus({ submitting: true, submitted: false, error: null });
 
     try {
-      // Replace this URL with your Google Apps Script Web App URL
-      const GOOGLE_SHEETS_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL";
+      // Create form data
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      formDataToSend.append("timestamp", new Date().toISOString());
 
-      await axios.post(GOOGLE_SHEETS_URL, {
-        ...formData,
-        timestamp: new Date().toISOString(),
+      // Convert form data to query string
+      const queryString = new URLSearchParams(formDataToSend).toString();
+      const urlWithParams = `${GOOGLE_SHEETS_URL}?${queryString}`;
+
+      // Make the request
+      const response = await fetch(urlWithParams, {
+        method: "GET",
+        mode: "no-cors",
       });
 
+      // Since we're using no-cors, we won't get a readable response
+      // So we'll assume success if we get here
       setStatus({ submitting: false, submitted: true, error: null });
       setFormData({
         name: "",
