@@ -1,128 +1,83 @@
-# Genvest - Investment Platform
+# Genvest Ventures Frontend
 
-## Overview
+This is the frontend application for Genvest Ventures, a financial services company based in Nepal. The application is built using React and provides a modern, responsive interface for users to access financial services and information.
 
-Genvest is a modern investment platform built with React.js that provides users with investment opportunities and financial services. The platform features a responsive design, user authentication, contact management, and various interactive components.
+## Technologies Used
 
-## Features
+- React
+- React Router for navigation
+- Tailwind CSS for styling
+- Vite (Build tool)
 
-- 🎯 Modern and responsive UI design
-- 🔐 User authentication and registration
-- 📱 Mobile-friendly interface
-- 📧 Contact form with Google Sheets integration
-- 🗺️ Interactive Google Maps integration
-- 💼 Investment portfolio management
-- 👥 Team member profiles
-- 🎨 Tailwind CSS for styling
+## Prerequisites
 
-## Tech Stack
-
-- React.js
-- Tailwind CSS
-- Axios
-- React Router DOM
-- Google Maps API
-- Google Sheets API (for contact form)
-- Lucide React Icons
+- Node.js (v16.0.0 or higher)
+- npm (v7.0.0 or higher)
 
 ## Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm or yarn
-- Git
-
-### Installation
 
 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/genvest.git
-cd genvest
+git clone [repository-url]
+cd frontend
 ```
 
 2. Install dependencies
 
 ```bash
 npm install
-# or
-yarn install
 ```
 
-3. Create environment variables
-   Create a `.env` file in the root directory and add the following:
+3. Create a `.env` file in the root directory and add necessary environment variables
 
-```env
-VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+```bash
+VITE_API_URL=http://localhost:8000
 ```
 
 4. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
+
+The application will be available at `http://localhost:5173`
+
+## Build for Production
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+The build files will be available in the `dist` directory.
 
 ## Project Structure
 
 ```
-genvest/
+frontend/
 ├── src/
-│   ├── components/
-│   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   ├── Contact.jsx
-│   │   │   └── ...
-│   │   ├── Card.jsx
-│   │   ├── Signup.jsx
-│   │   └── ...
-│   ├── assets/
-│   ├── styles/
-│   ├── App.jsx
-│   └── main.jsx
-├── public/
-├── package.json
-└── README.md
+│   ├── assets/        # Static assets (images, icons)
+│   ├── components/    # Reusable React components
+│   ├── pages/         # Page components
+│   ├── services/      # API services
+│   ├── utils/         # Utility functions
+│   ├── App.jsx        # Root component
+│   └── main.jsx      # Entry point
+├── public/           # Public assets
+└── index.html        # HTML template
 ```
 
-## Contact Form Setup
+## Features
 
-The contact form uses Google Sheets as a backend to store submissions. To set it up:
-
-1. Create a new Google Sheet
-2. Set up Google Apps Script:
-   - Go to Extensions > Apps Script
-   - Copy and paste the provided script
-   - Deploy as web app
-   - Set permissions to "Anyone"
-   - Copy the deployment URL
-3. Update the `GOOGLE_SHEETS_URL` in `Contact.jsx`
-
-## Features in Detail
-
-### User Authentication
-
-- Sign up with email/password
-- Profile photo upload
-- Social media integration
-- Form validation
-
-### Contact Page
-
-- Interactive contact form
-- Google Maps integration
-- Real-time form validation
-- Success/error notifications
-- Data storage in Google Sheets
-
-### Responsive Design
-
-- Mobile-first approach
-- Tailwind CSS utilities
-- Smooth transitions
-- Modern UI components
+- Modern and responsive design
+- Real-time market data display
+- User authentication and authorization
+- Financial services information
+- Contact and support system
+- FAQ section
+- Privacy policy and terms of use
 
 ## Contributing
 
@@ -134,17 +89,4 @@ The contact form uses Google Sheets as a backend to store submissions. To set it
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-
-- Website: [genvest.com.np](https://genvest.com.np)
-- Email: info@genvest.com.np
-- Location: Kathmandu, Nepal
-
-## Acknowledgments
-
-- [React.js](https://reactjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Google Maps Platform](https://developers.google.com/maps)
-- [Google Sheets API](https://developers.google.com/sheets/api)
+This project is proprietary and confidential. All rights reserved by Genvest Ventures Pvt. Ltd.
