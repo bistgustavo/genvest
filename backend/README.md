@@ -36,7 +36,6 @@ npm install
 
 ```bash
 PORT=8000
-MONGODB_URI=mongodb://localhost:27017/genvest
 JWT_SECRET=your_jwt_secret
 NODE_ENV=development
 SMTP_HOST=your_smtp_host
@@ -51,7 +50,7 @@ SMTP_PASS=your_smtp_password
 npm run dev
 ```
 
-The server will be available at `http://localhost:8000`
+The server will be available at `http://localhost:3000`
 
 ## API Documentation
 
