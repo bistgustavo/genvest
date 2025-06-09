@@ -57,12 +57,12 @@ const Insights = () => {
   return (
     <main className="pt-[80px]">
       {/* Hero Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-[#0D4E4A]/5">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-teal-900 mb-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-[#0D4E4A] mb-4 text-center">
             Market Insights & Analysis
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-center">
+          <p className="text-xl text-black max-w-3xl mx-auto text-center">
             Stay informed with our latest market insights, investment
             strategies, and financial planning tips.
           </p>
@@ -78,8 +78,8 @@ const Insights = () => {
                 key={category}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category
-                    ? "bg-teal-600 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    ? "bg-[#0D4E4A] text-white"
+                    : "bg-[#0D4E4A]/5 text-black hover:bg-[#0D4E4A]/10"
                 }`}
                 onClick={() => setSelectedCategory(category)}
               >
@@ -103,15 +103,15 @@ const Insights = () => {
                 />
               </div>
               <div className="md:w-1/2 p-8">
-                <span className="text-teal-600 font-medium">Featured</span>
-                <h2 className="text-2xl font-bold text-gray-900 mt-2 mb-4">
+                <span className="text-[#CB9C30] font-medium">Featured</span>
+                <h2 className="text-2xl font-bold text-[#0D4E4A] mt-2 mb-4">
                   The Future of Investment: Trends to Watch in 2025
                 </h2>
-                <p className="text-gray-600 mb-6">
+                <p className="text-black mb-6">
                   An in-depth analysis of emerging investment trends and
                   opportunities in the evolving financial landscape...
                 </p>
-                <div className="flex items-center text-sm text-gray-500 mb-6">
+                <div className="flex items-center text-sm text-black mb-6">
                   <span>By Robert Wilson</span>
                   <span className="mx-2">•</span>
                   <span>May 15, 2025</span>
@@ -120,7 +120,7 @@ const Insights = () => {
                 </div>
                 <Link
                   to="/insights/future-of-investment"
-                  className="inline-block bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-teal-700 transition-colors"
+                  className="inline-block bg-[#0D4E4A] text-white px-6 py-2 rounded-md hover:bg-[#0D4E4A]/80 transition-colors"
                 >
                   Read More
                 </Link>
@@ -145,14 +145,14 @@ const Insights = () => {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <span className="text-sm text-teal-600 font-medium">
+                  <span className="text-sm text-[#CB9C30] font-medium">
                     {article.category}
                   </span>
-                  <h3 className="text-xl font-bold text-gray-900 mt-2 mb-3">
+                  <h3 className="text-xl font-bold text-[#0D4E4A] mt-2 mb-3">
                     {article.title}
                   </h3>
-                  <p className="text-gray-600 mb-4">{article.excerpt}</p>
-                  <div className="flex items-center text-sm text-gray-500 mb-4">
+                  <p className="text-black mb-4">{article.excerpt}</p>
+                  <div className="flex items-center text-sm text-black mb-4">
                     <span>{article.author}</span>
                     <span className="mx-2">•</span>
                     <span>{article.date}</span>
@@ -161,41 +161,13 @@ const Insights = () => {
                   </div>
                   <Link
                     to={`/insights/${article.id}`}
-                    className="text-teal-600 font-medium hover:text-teal-700"
+                    className="text-[#CB9C30] font-medium hover:text-[#CB9C30]/80"
                   >
                     Read More →
                   </Link>
                 </div>
               </article>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Stay Updated
-            </h2>
-            <p className="text-gray-600 mb-8">
-              Subscribe to our newsletter to receive the latest insights and
-              market analysis directly in your inbox.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-              />
-              <button
-                type="submit"
-                className="bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-teal-700 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
           </div>
         </div>
       </section>

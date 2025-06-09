@@ -7,7 +7,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -20,8 +20,10 @@ app.use(cookieParser());
 
 //routes
 import userRoutes from "./routes/user.routes.js";
+import scriptRoutes from "./routes/script.routes.js"
 
 app.use("/api/v2/users", userRoutes);
+app.use("/api/v2/scripts" ,  scriptRoutes)
 
 app.use(errorHandler);
 

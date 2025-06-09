@@ -77,12 +77,12 @@ const Contact = () => {
   return (
     <main className="pt-[80px]">
       {/* Hero Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-[#0D4E4A]/5">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-teal-900 mb-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-[#0D4E4A] mb-4 text-center">
             Contact Us
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-center">
+          <p className="text-xl text-black max-w-3xl mx-auto text-center">
             Have questions? We'd love to hear from you. Send us a message and
             we'll respond as soon as possible.
           </p>
@@ -95,7 +95,7 @@ const Contact = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div className="bg-white p-8 rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold text-teal-900 mb-6">
+              <h2 className="text-2xl font-bold text-[#0D4E4A] mb-6">
                 Send us a Message
               </h2>
 
@@ -115,7 +115,7 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-black"
                   >
                     Full Name <span className="text-red-500">*</span>
                   </label>
@@ -126,14 +126,14 @@ const Contact = () => {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="mt-1 block w-full border-[#0D4E4A] rounded-md shadow-sm focus:ring-[#CB9C30] focus:border-[#CB9C30]"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-black"
                   >
                     Email Address <span className="text-red-500">*</span>
                   </label>
@@ -144,14 +144,14 @@ const Contact = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="mt-1 block w-full border-[#0D4E4A] rounded-md shadow-sm focus:ring-[#CB9C30] focus:border-[#CB9C30]"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="phone"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-black"
                   >
                     Phone Number
                   </label>
@@ -161,14 +161,14 @@ const Contact = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="mt-1 block w-full border-[#0D4E4A] rounded-md shadow-sm focus:ring-[#CB9C30] focus:border-[#CB9C30]"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-black"
                   >
                     Subject <span className="text-red-500">*</span>
                   </label>
@@ -179,14 +179,14 @@ const Contact = () => {
                     required
                     value={formData.subject}
                     onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="mt-1 block w-full border-[#0D4E4A] rounded-md shadow-sm focus:ring-[#CB9C30] focus:border-[#CB9C30]"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-black"
                   >
                     Message <span className="text-red-500">*</span>
                   </label>
@@ -197,7 +197,7 @@ const Contact = () => {
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="mt-1 block w-full border-[#0D4E4A] rounded-md shadow-sm focus:ring-[#CB9C30] focus:border-[#CB9C30]"
                   ></textarea>
                 </div>
 
@@ -205,7 +205,7 @@ const Contact = () => {
                   <button
                     type="submit"
                     disabled={status.submitting}
-                    className={`w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center`}
+                    className={`w-full bg-[#0D4E4A] text-white py-2 px-4 rounded-md hover:bg-[#0D4E4A]/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#CB9C30] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center`}
                   >
                     {status.submitting ? (
                       <>
@@ -242,54 +242,44 @@ const Contact = () => {
             {/* Contact Information */}
             <div>
               <div className="bg-white p-8 rounded-lg shadow-md mb-8">
-                <h2 className="text-2xl font-bold text-teal-900 mb-6">
+                <h2 className="text-2xl font-bold text-[#0D4E4A] mb-6">
                   Contact Information
                 </h2>
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-[#CB9C30]">
                       Address
                     </h3>
-                    <p className="text-gray-600">Kathmandu, Nepal</p>
+                    <p className="text-black">
+                      123 Investment Avenue
+                      <br />
+                      Financial District
+                      <br />
+                      New York, NY 10004
+                    </p>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Email
-                    </h3>
-                    <a
-                      href="mailto:info@genvest.com.np"
-                      className="text-teal-600 hover:text-teal-700"
-                    >
-                      info@genvest.com.np
-                    </a>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-[#CB9C30]">
                       Phone
                     </h3>
-                    <a
-                      href="tel:+97712345678"
-                      className="text-teal-600 hover:text-teal-700"
-                    >
-                      +977-1-2345678
-                    </a>
+                    <p className="text-black">+1 (555) 123-4567</p>
                   </div>
-                </div>
-              </div>
-
-              {/* Business Hours */}
-              <div className="bg-white p-8 rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold text-teal-900 mb-6">
-                  Business Hours
-                </h2>
-                <div className="space-y-2">
-                  <p className="text-gray-600">
-                    <span className="font-semibold">Sunday - Friday:</span> 9:00
-                    AM - 5:00 PM
-                  </p>
-                  <p className="text-gray-600">
-                    <span className="font-semibold">Saturday:</span> Closed
-                  </p>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#CB9C30]">
+                      Email
+                    </h3>
+                    <p className="text-black">contact@genvest.com</p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#CB9C30]">
+                      Business Hours
+                    </h3>
+                    <p className="text-black">
+                      Monday - Friday: 9:00 AM - 6:00 PM EST
+                      <br />
+                      Saturday & Sunday: Closed
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

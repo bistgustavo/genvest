@@ -15,7 +15,7 @@ const About = () => {
     <PageTransition>
       <main className="pt-[80px]">
         {/* Hero Section */}
-        <section className="relative py-20 bg-slate-900">
+        <section className="relative py-20 bg-[#0D4E4A]">
           <div className="absolute inset-0 bg-[url('/assets/pattern.svg')] opacity-10"></div>
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center text-white">
@@ -31,7 +31,7 @@ const About = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-xl text-gray-300"
+                className="text-xl text-[#CB9C30]"
               >
                 A legacy of excellence in investment management and financial
                 innovation
@@ -46,10 +46,10 @@ const About = () => {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <ScrollReveal>
                 <div>
-                  <h2 className="text-3xl font-bold text-slate-900 mb-6">
+                  <h2 className="text-3xl font-bold text-[#0D4E4A] mb-6">
                     Our Mission
                   </h2>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
+                  <p className="text-black mb-8 leading-relaxed">
                     At Genvest, our mission is to empower investors with
                     innovative financial solutions and expert guidance. We are
                     committed to delivering superior investment outcomes while
@@ -58,7 +58,7 @@ const About = () => {
                   </p>
                   <div className="space-y-4">
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 w-6 h-6 text-teal-600">
+                      <div className="flex-shrink-0 w-6 h-6 text-[#CB9C30]">
                         <svg
                           fill="none"
                           stroke="currentColor"
@@ -72,12 +72,12 @@ const About = () => {
                           />
                         </svg>
                       </div>
-                      <p className="ml-3 text-gray-600">
+                      <p className="ml-3 text-black">
                         Data-driven investment strategies
                       </p>
                     </div>
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 w-6 h-6 text-teal-600">
+                      <div className="flex-shrink-0 w-6 h-6 text-[#CB9C30]">
                         <svg
                           fill="none"
                           stroke="currentColor"
@@ -91,12 +91,10 @@ const About = () => {
                           />
                         </svg>
                       </div>
-                      <p className="ml-3 text-gray-600">
-                        Client-centric approach
-                      </p>
+                      <p className="ml-3 text-black">Client-centric approach</p>
                     </div>
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 w-6 h-6 text-teal-600">
+                      <div className="flex-shrink-0 w-6 h-6 text-[#CB9C30]">
                         <svg
                           fill="none"
                           stroke="currentColor"
@@ -110,7 +108,7 @@ const About = () => {
                           />
                         </svg>
                       </div>
-                      <p className="ml-3 text-gray-600">
+                      <p className="ml-3 text-black">
                         Sustainable long-term growth
                       </p>
                     </div>
@@ -119,21 +117,21 @@ const About = () => {
               </ScrollReveal>
               <ScrollReveal>
                 <div>
-                  <h2 className="text-3xl font-bold text-slate-900 mb-6">
+                  <h2 className="text-3xl font-bold text-[#0D4E4A] mb-6">
                     Our Vision
                   </h2>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
+                  <p className="text-black mb-8 leading-relaxed">
                     We envision a future where every investor has access to
                     sophisticated financial tools and personalized guidance. Our
                     goal is to be the leading platform that bridges the gap
                     between traditional investment management and cutting-edge
                     financial technology.
                   </p>
-                  <div className="bg-teal-50 p-6 rounded-lg">
-                    <h3 className="text-lg font-semibold text-teal-900 mb-3">
+                  <div className="bg-[#0D4E4A]/10 p-6 rounded-lg">
+                    <h3 className="text-lg font-semibold text-[#0D4E4A] mb-3">
                       Core Values
                     </h3>
-                    <ul className="space-y-2 text-teal-800">
+                    <ul className="space-y-2 text-black">
                       <li>• Innovation in Financial Solutions</li>
                       <li>• Transparency and Trust</li>
                       <li>• Excellence in Service</li>
@@ -146,49 +144,10 @@ const About = () => {
           </div>
         </section>
 
-        {/* Leadership Team */}
-        <section className="py-20 bg-slate-50">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                Our Leadership Team
-              </h2>
-              <p className="text-gray-600">
-                Meet the experienced professionals leading Genvest's innovation
-                in investment management.
-              </p>
-            </div>
-            <StaggerContainer>
-              <div className="grid md:grid-cols-3 gap-8">
-                {teamMembers.map((member, index) => (
-                  <StaggerItem key={index}>
-                    <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="w-32 h-32 rounded-full mx-auto mb-6 object-cover"
-                      />
-                      <h3 className="text-xl font-semibold text-slate-900 text-center mb-2">
-                        {member.name}
-                      </h3>
-                      <p className="text-teal-600 text-center mb-4">
-                        {member.position}
-                      </p>
-                      <p className="text-gray-600 text-center">
-                        {member.description}
-                      </p>
-                    </div>
-                  </StaggerItem>
-                ))}
-              </div>
-            </StaggerContainer>
-          </div>
-        </section>
-
         {/* Core Values Section */}
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-[#0D4E4A]/5">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            <h2 className="text-3xl font-bold text-center text-[#0D4E4A] mb-12">
               Our Core Values
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -223,10 +182,10 @@ const About = () => {
                   key={index}
                   className="text-center p-6 bg-white rounded-lg shadow-md"
                 >
-                  <h4 className="text-xl font-semibold text-gray-900 mb-3">
+                  <h4 className="text-xl font-semibold text-[#0D4E4A] mb-3">
                     {value.title}
                   </h4>
-                  <p className="text-gray-700">{value.description}</p>
+                  <p className="text-black">{value.description}</p>
                 </div>
               ))}
             </div>
@@ -236,10 +195,10 @@ const About = () => {
         {/* Team Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
+            <h2 className="text-3xl font-bold text-center text-[#0D4E4A] mb-8">
               The People Behind Genvest
             </h2>
-            <p className="text-center text-gray-700 max-w-3xl mx-auto mb-12">
+            <p className="text-center text-black max-w-3xl mx-auto mb-12">
               Our strength lies in our collective expertise and shared
               commitment to our clients' success. Meet the dedicated individuals
               who are passionate about turning your ambition into impact.
@@ -281,13 +240,6 @@ const About = () => {
               Connect with our team today to learn how Genvest can help you turn
               your financial aspirations into tangible impact.
             </p>
-            <Link
-              onClick={() => scrollTo(0, 0)}
-              to="/contact"
-              className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Get in Touch
-            </Link>
           </div>
         </section>
       </main>

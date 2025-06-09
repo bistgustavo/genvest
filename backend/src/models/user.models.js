@@ -15,13 +15,19 @@ const userSchema = new mongoose.Schema(
       trim: true,
       index: true,
     },
+    phoneNumber: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
       unique: true,
     },
     profileImage: {
-      type: String,
+      url: String,
+      public_id: String,
     },
     password: {
       type: String,

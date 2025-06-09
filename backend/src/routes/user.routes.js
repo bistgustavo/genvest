@@ -6,6 +6,7 @@ import {
   logoutUser,
   refreshAccessToken,
   changeCurrentPassword,
+  changeProfileImage
 } from "../controllers/users.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 
@@ -17,6 +18,7 @@ router.route("/refresh").post(refreshAccessToken);
 
 //secured routes
 router.route("/logout").post(verifyJwt, logoutUser);
-router.route("/change-password").post(verifyJwt, changeCurrentPassword);
+router.route("/change-password").patch(verifyJwt, changeCurrentPassword);
+router.route("/change-profile-image").patch(verifyJwt, upload.single("profileImage"), changeProfileImage);
 
 export default router;

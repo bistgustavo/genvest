@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PageTransition } from "../animations/AnimationWrapper";
+import { assets } from "../../assets/assest";
+import { useAppContext } from "../../context/AppContext";
 
 const Login = () => {
-  const navigate = useNavigate();
+  
+  const location = useLocation();
+  const { login, isAuthenticated , navigate } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -12,6 +16,14 @@ const Login = () => {
     password: "",
     rememberMe: false,
   });
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const redirectTo = location.state?.redirectTo || "/";
+      navigate(redirectTo);
+    }
+  }, [isAuthenticated, navigate, location]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -27,20 +39,20 @@ const Login = () => {
     setError("");
 
     try {
-      // Here you would typically make an API call to your authentication endpoint
-      // For demo purposes, we'll simulate a successful login after a delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const { success, error: loginError } = await login(
+        formData.email,
+        formData.password
+      );
 
-      // Store auth token or user data in localStorage/context
-      localStorage.setItem("isLoggedIn", "true");
-
-      // Redirect to home page
-      navigate("/");
-
-      // Reload the page to update the auth state
-      window.location.reload();
+      if (success) {
+        // If there's a redirect path in location state, use it
+        const redirectTo = location.state?.redirectTo || "/";
+        navigate(redirectTo);
+      } else {
+        setError(loginError || "Invalid email or password. Please try again.");
+      }
     } catch (err) {
-      setError("Invalid email or password. Please try again.");
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -57,11 +69,20 @@ const Login = () => {
               transition={{ duration: 0.5 }}
               className="bg-white rounded-2xl shadow-xl p-8"
             >
+              <div className="flex justify-center mb-6">
+                <Link to="/">
+                  <img
+                    src={assets.logo}
+                    alt="Genvest Logo"
+                    className="h-16 w-auto"
+                  />
+                </Link>
+              </div>
               <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="text-3xl font-bold text-[#0D4E4A] mb-2">
                   Welcome Back
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-[#0D4E4A]/70">
                   Sign in to access your investment dashboard
                 </p>
               </div>
@@ -76,11 +97,21 @@ const Login = () => {
                 </motion.div>
               )}
 
+              {location.state?.message && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-blue-50 text-blue-600 px-4 py-3 rounded-lg mb-6"
+                >
+                  {location.state.message}
+                </motion.div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-[#0D4E4A] mb-2"
                   >
                     Email Address
                   </label>
@@ -91,7 +122,7 @@ const Login = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0D4E4A] focus:border-[#0D4E4A] transition-colors"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -99,7 +130,7 @@ const Login = () => {
                 <div>
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-[#0D4E4A] mb-2"
                   >
                     Password
                   </label>
@@ -110,7 +141,7 @@ const Login = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0D4E4A] focus:border-[#0D4E4A] transition-colors"
                     placeholder="Enter your password"
                   />
                 </div>
@@ -123,29 +154,29 @@ const Login = () => {
                       name="rememberMe"
                       checked={formData.rememberMe}
                       onChange={handleChange}
-                      className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-[#0D4E4A] focus:ring-[#0D4E4A] border-gray-300 rounded"
                     />
                     <label
                       htmlFor="rememberMe"
-                      className="ml-2 block text-sm text-gray-700"
+                      className="ml-2 block text-sm text-[#0D4E4A]"
                     >
                       Remember me
                     </label>
                   </div>
                   <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-medium text-teal-600 hover:text-teal-500"
+                    <Link
+                      to="/forgot-password"
+                      className="font-medium text-[#0D4E4A] hover:text-[#CB9C30]"
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors ${
+                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0D4E4A] hover:bg-[#CB9C30] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0D4E4A] transition-colors ${
                     isLoading ? "opacity-75 cursor-not-allowed" : ""
                   }`}
                 >
@@ -176,14 +207,14 @@ const Login = () => {
                 </button>
 
                 <div className="mt-6 text-center">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-[#0D4E4A]">
                     Don't have an account?{" "}
-                    <a
-                      href="#"
-                      className="font-medium text-teal-600 hover:text-teal-500"
+                    <Link
+                      to="/signup"
+                      className="font-medium text-[#0D4E4A] hover:text-[#CB9C30]"
                     >
                       Sign up
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </form>

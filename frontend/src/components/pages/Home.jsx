@@ -11,13 +11,15 @@ import {
   StaggerItem,
 } from "../animations/AnimationWrapper";
 import { assets } from "../../assets/assest";
+import { useAppContext } from "../../context/AppContext.jsx";
 
 const Home = () => {
+  const { navigate } = useAppContext();
   return (
     <PageTransition>
       <main className="pt-[80px]">
         {/* Hero Section */}
-        <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-slate-900 via-teal-900 to-slate-900">
+        <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-[#0D4E4A] via-[#0D4E4A]/80 to-[#0D4E4A]">
           <div className="absolute inset-0 bg-[url('/assets/pattern.svg')] opacity-10"></div>
           <FadeIn>
             <div className="container mx-auto px-4 py-20">
@@ -26,7 +28,7 @@ const Home = () => {
                   <SlideUp delay={0.2}>
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                       Strategic Investment Solutions for{" "}
-                      <span className="text-teal-400">Sustainable Growth</span>
+                      <span className="text-[#CB9C30]">Sustainable Growth</span>
                     </h1>
                   </SlideUp>
                   <SlideUp delay={0.3}>
@@ -38,18 +40,12 @@ const Home = () => {
                   </SlideUp>
                   <SlideUp delay={0.4}>
                     <div className="flex flex-wrap gap-4">
-                      <Link
-                        to="/contact"
-                        className="px-8 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all font-medium"
+                      <button
+                        onClick={() => navigate("/insights")}
+                        className="px-8 py-3 bg-[#CB9C30] text-white rounded-lg hover:bg-[#CB9C30]/80 transition-all font-medium cursor-pointer"
                       >
-                        Schedule Consultation
-                      </Link>
-                      <Link
-                        to="/market-data"
-                        className="px-8 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all font-medium"
-                      >
-                        View Market Insights
-                      </Link>
+                        View Insights
+                      </button>
                     </div>
                   </SlideUp>
                 </div>
@@ -74,20 +70,20 @@ const Home = () => {
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="text-center">
-                  <h3 className="text-4xl font-bold text-teal-900">$2.5B+</h3>
-                  <p className="text-gray-600 mt-2">Assets Under Management</p>
+                  <h3 className="text-4xl font-bold text-[#0D4E4A]">$2.5B+</h3>
+                  <p className="text-black mt-2">Assets Under Management</p>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-4xl font-bold text-teal-900">15+</h3>
-                  <p className="text-gray-600 mt-2">Years of Excellence</p>
+                  <h3 className="text-4xl font-bold text-[#0D4E4A]">15+</h3>
+                  <p className="text-black mt-2">Years of Excellence</p>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-4xl font-bold text-teal-900">5000+</h3>
-                  <p className="text-gray-600 mt-2">Satisfied Clients</p>
+                  <h3 className="text-4xl font-bold text-[#0D4E4A]">5000+</h3>
+                  <p className="text-black mt-2">Satisfied Clients</p>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-4xl font-bold text-teal-900">98%</h3>
-                  <p className="text-gray-600 mt-2">Client Retention</p>
+                  <h3 className="text-4xl font-bold text-[#0D4E4A]">98%</h3>
+                  <p className="text-black mt-2">Client Retention</p>
                 </div>
               </div>
             </div>
@@ -95,13 +91,13 @@ const Home = () => {
         </section>
 
         {/* Services Section */}
-        <section className="py-20 bg-slate-50">
+        <section className="py-20 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#0D4E4A] mb-4">
                 Comprehensive Investment Solutions
               </h2>
-              <p className="text-gray-600">
+              <p className="text-black">
                 Our expertise spans across multiple domains to provide you with
                 holistic financial solutions.
               </p>
@@ -111,18 +107,16 @@ const Home = () => {
                 {services.map((service, index) => (
                   <StaggerItem key={index}>
                     <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                      <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-6">
-                        <service.icon className="w-6 h-6 text-teal-600" />
+                      <div className="w-12 h-12 bg-[#0D4E4A]/10 rounded-lg flex items-center justify-center mb-6">
+                        <service.icon className="w-6 h-6 text-[#0D4E4A]" />
                       </div>
-                      <h3 className="text-xl font-semibold text-slate-900 mb-4">
+                      <h3 className="text-xl font-semibold text-[#0D4E4A] mb-4">
                         {service.title}
                       </h3>
-                      <p className="text-gray-600 mb-6">
-                        {service.description}
-                      </p>
+                      <p className="text-black mb-6">{service.description}</p>
                       <Link
                         to={service.link}
-                        className="text-teal-600 font-medium hover:text-teal-700 flex items-center"
+                        className="text-[#CB9C30] font-medium hover:text-[#CB9C30]/80 flex items-center"
                       >
                         Learn More
                         <svg
@@ -150,35 +144,16 @@ const Home = () => {
         <InsightsSection />
 
         {/* CTA Section */}
-        <section className="py-20 bg-slate-900">
+        <section className="py-20 bg-[#0D4E4A]/10">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#0D4E4A] mb-6">
                 Ready to Elevate Your Investment Strategy?
               </h2>
-              <p className="text-xl text-gray-300 mb-8">
+              <p className="text-xl text-black mb-8">
                 Join thousands of successful investors who trust Genvest for
                 their financial future.
               </p>
-              <Link
-                to="/contact"
-                className="inline-flex items-center px-8 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all font-medium"
-              >
-                Schedule a Consultation
-                <svg
-                  className="w-5 h-5 ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </Link>
             </div>
           </div>
         </section>
