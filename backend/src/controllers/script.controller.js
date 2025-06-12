@@ -7,7 +7,6 @@ import {
   deleteFromCloudinary,
 } from "../utils/cloudinary.js";
 import Rating from "../models/rating.models.js";
-import { mongo } from "mongoose";
 import mongoose from "mongoose";
 
 // Create a new script

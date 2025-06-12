@@ -20,10 +20,12 @@ app.use(cookieParser());
 
 //routes
 import userRoutes from "./routes/user.routes.js";
-import scriptRoutes from "./routes/script.routes.js"
+import scriptRoutes from "./routes/script.routes.js";
+import ratingRoutes from "./routes/rating.routes.js";
 
 app.use("/api/v2/users", userRoutes);
-app.use("/api/v2/scripts" ,  scriptRoutes)
+app.use("/api/v2/scripts", scriptRoutes);
+app.use("/api/v2/ratings", ratingRoutes);
 
 app.use(errorHandler);
 

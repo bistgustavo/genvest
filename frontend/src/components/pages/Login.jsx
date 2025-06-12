@@ -4,11 +4,12 @@ import { motion } from "framer-motion";
 import { PageTransition } from "../animations/AnimationWrapper";
 import { assets } from "../../assets/assest";
 import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  
   const location = useLocation();
-  const { login, isAuthenticated , navigate } = useAppContext();
+  const { login, isAuthenticated } = useAppContext();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -33,26 +34,27 @@ const Login = () => {
     }));
   };
 
+  // Proper login submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
     try {
-      const { success, error: loginError } = await login(
-        formData.email,
-        formData.password
-      );
+      const { email, password } = formData;
+      const result = await login(email, password);
 
-      if (success) {
-        // If there's a redirect path in location state, use it
+      if (result.success) {
+        toast.success("Logged in successfully!");
         const redirectTo = location.state?.redirectTo || "/";
         navigate(redirectTo);
+        console.log(result.data.token);
       } else {
-        setError(loginError || "Invalid email or password. Please try again.");
+        setError(result.error || "Login failed");
       }
     } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
+      setError(err.message || "An error occurred during login");
+      console.error("Login error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -69,6 +71,7 @@ const Login = () => {
               transition={{ duration: 0.5 }}
               className="bg-white rounded-2xl shadow-xl p-8"
             >
+              {/* Logo and header */}
               <div className="flex justify-center mb-6">
                 <Link to="/">
                   <img
@@ -87,6 +90,7 @@ const Login = () => {
                 </p>
               </div>
 
+              {/* Error messages */}
               {error && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -107,7 +111,9 @@ const Login = () => {
                 </motion.div>
               )}
 
+              {/* Login form */}
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Email field */}
                 <div>
                   <label
                     htmlFor="email"
@@ -127,6 +133,7 @@ const Login = () => {
                   />
                 </div>
 
+                {/* Password field */}
                 <div>
                   <label
                     htmlFor="password"
@@ -146,6 +153,7 @@ const Login = () => {
                   />
                 </div>
 
+                {/* Remember me and forgot password */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <input
@@ -173,6 +181,7 @@ const Login = () => {
                   </div>
                 </div>
 
+                {/* Submit button */}
                 <button
                   type="submit"
                   disabled={isLoading}
@@ -206,6 +215,7 @@ const Login = () => {
                   )}
                 </button>
 
+                {/* Sign up link */}
                 <div className="mt-6 text-center">
                   <p className="text-sm text-[#0D4E4A]">
                     Don't have an account?{" "}

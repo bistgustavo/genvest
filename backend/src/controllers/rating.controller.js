@@ -1,14 +1,17 @@
-import { asyncHandler } from "../utils/asyncHandler.js";
+import { asyncHandler } from "../utils/asyncHandlers.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { Rating } from "../models/rating.model.js";
-import { Script } from "../models/script.model.js";
+import Rating from "../models/rating.models.js";
+import Script from "../models/script.models.js";
 
 // Add or update a rating
 const addOrUpdateRating = asyncHandler(async (req, res) => {
-  const { scriptId, rating } = req.body;
-  const userId = req.user._id;
+  const { scriptId, rating, guestId } = req.body;
+  const userId = req.user?._id; // Optional for authenticated users
+  const ipAddress =
+    req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
+  // Validate required fields
   if (!scriptId || !rating) {
     throw new ApiError(400, "Script ID and rating are required");
   }
@@ -17,45 +20,58 @@ const addOrUpdateRating = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Rating must be between 1 and 10");
   }
 
+  // Verify script exists
   const script = await Script.findById(scriptId);
   if (!script) {
     throw new ApiError(404, "Script not found");
   }
 
-  // Check if user already rated this script
+  // Determine rating identifier (user or guest)
+  const ratingIdentifier = userId
+    ? { user: userId }
+    : { guestId: guestId || ipAddress };
+
+  // Check for existing rating
   let existingRating = await Rating.findOne({
     script: scriptId,
-    user: userId,
+    ...ratingIdentifier,
   });
 
+  // Create or update rating
   if (existingRating) {
-    // Update existing rating
     existingRating.rating = rating;
+    existingRating.ipAddress = ipAddress; // Update IP in case it changed
     await existingRating.save();
   } else {
-    // Create new rating
     existingRating = await Rating.create({
       script: scriptId,
-      user: userId,
+      ...ratingIdentifier,
       rating,
+      ipAddress,
     });
   }
 
-  // Calculate new average rating for the script
+  // Recalculate average rating
   const ratings = await Rating.find({ script: scriptId });
   const totalRatings = ratings.reduce((sum, r) => sum + r.rating, 0);
   const averageRating = totalRatings / ratings.length;
 
-  // Update script with average rating
-  script.averageRating = averageRating;
+  // Update script with new rating data
+  script.averageRating = parseFloat(averageRating.toFixed(2));
   script.ratingCount = ratings.length;
   await script.save();
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(200, existingRating, "Rating added/updated successfully")
-    );
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        rating: existingRating,
+        averageRating: script.averageRating,
+        ratingCount: script.ratingCount,
+      },
+      "Rating added/updated successfully"
+    )
+  );
 });
 
 // Get user's rating for a script

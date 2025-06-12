@@ -1,61 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   PageTransition,
-  ScrollReveal,
+  ScrollReveal, // Not used but kept if needed elsewhere
   StaggerContainer,
   StaggerItem,
 } from "../animations/AnimationWrapper";
 import { FaImage } from "react-icons/fa";
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar } from "react-icons/ai"; // Not directly used here, but in PostCard
 import { useAppContext } from "../../context/AppContext";
-// Define categories and posts outside the component
-const categories = [{ id: "all", name: "All Posts" }];
+import toast from "react-hot-toast";
+import PostCard from "../PostCard.jsx";
+// import Cookies from "js-cookie"; // Not used, removed
 
-const initialPosts = [
-  {
-    title: "Emerging Tech Stocks to Watch",
-    content:
-      "Discover promising technology companies that are positioned for significant growth in the coming months. Analysis of market potential and risks.",
-    author: {
-      name: "Michael Rodriguez",
-      title: "Senior Market Analyst",
-      avatar: "/assets/team/michael-rodriguez.jpg",
-    },
-    date: "Oct 14, 2023",
-    image: "/assets/posts/tech-stocks.jpg",
-    category: "tech",
-    rating: 189,
-  },
-  {
-    title: "Cryptocurrency Market Update",
-    content:
-      "Latest developments in the cryptocurrency market, including regulatory changes and technical analysis of major cryptocurrencies.",
-    author: {
-      name: "David Park",
-      title: "Crypto Analyst",
-      avatar: "/assets/team/david-park.jpg",
-    },
-    date: "Oct 13, 2023",
-    image: "/assets/posts/crypto-market.jpg",
-    category: "crypto",
-    rating: 312,
-  },
+const categories = [
+  { id: "all", name: "All Posts" },
+  { id: "my-posts", name: "My Posts" },
 ];
 
 const Discussion = () => {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [posts, setPosts] = useState(initialPosts);
   const [newPost, setNewPost] = useState({
     title: "",
-    content: "",
-    image: null,
+    description: "",
+    imageUrl: null,
   });
   const [selectedFileName, setSelectedFileName] = useState("");
-  const { user, isLoggedIn, navigate } = useAppContext();
+  const {
+    user,
+    isLoggedIn,
+    navigate,
+    getScripts,
+    scripts, // This will be the source of truth from AppContext
+    getUserScripts,
+    userScripts, // This will be the source of truth from AppContext
+    createScript,
+    addOrUpdateRating,
+  } = useAppContext();
 
-  const handlePostSubmit = (e) => {
+  // Local states to manage posts for optimistic UI updates
+  const [allPosts, setAllPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
+
+  // Sync all scripts from AppContext to local state
+  useEffect(() => {
+    const fetchAndSetScripts = async () => {
+      await getScripts(); // Fetch the latest scripts
+    };
+    fetchAndSetScripts();
+  }, []); // Run once on component mount
+
+  useEffect(() => {
+    if (scripts) {
+      setAllPosts(scripts); // Update local state when scripts from AppContext change
+    }
+  }, [scripts]);
+
+  // Sync user's scripts from AppContext to local state
+  useEffect(() => {
+    if (isLoggedIn) {
+      const fetchAndSetUserScripts = async () => {
+        await getUserScripts(); // Fetch the latest user scripts
+      };
+      fetchAndSetUserScripts();
+    }
+  }, [isLoggedIn]); // Re-fetch if login status changes
+
+  useEffect(() => {
+    if (userScripts) {
+      setMyPosts(userScripts); // Update local state when userScripts from AppContext change
+    }
+  }, [userScripts]);
+
+
+  // Handling post submission
+  const handlePostSubmit = async (e) => {
     e.preventDefault();
+
     if (!isLoggedIn) {
       navigate("/login", {
         state: {
@@ -65,29 +86,145 @@ const Discussion = () => {
       });
       return;
     }
-    // Handle post submission logic here
-    console.log("New post:", newPost);
+
+    if (!newPost.title.trim() || !newPost.description.trim()) {
+        toast.error("Title and description cannot be empty.");
+        return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("title", newPost.title);
+      formData.append("description", newPost.description);
+      if (newPost.imageUrl instanceof File) {
+        formData.append("image", newPost.imageUrl);
+      }
+
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) {
+        throw new Error("Access token not found. Please log in again.");
+      }
+
+      const { success, error } = await createScript(formData, accessToken);
+
+      if (success) {
+        setNewPost({ title: "", description: "", imageUrl: null });
+        setSelectedFileName(""); // Clear selected file name
+        await getScripts(); // Refresh all posts
+        if (isLoggedIn) {
+          await getUserScripts(); // Refresh user-specific posts
+        }
+        toast.success("Post created successfully!");
+      } else {
+        toast.error(error);
+      }
+    } catch (error) {
+      console.error("Post submission error:", error);
+      toast.error(error.message || "Failed to create post");
+    }
   };
 
+  // Handling image upload
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setNewPost({ ...newPost, image: file });
+      setNewPost({ ...newPost, imageUrl: file });
       setSelectedFileName(file.name);
     } else {
-      setNewPost({ ...newPost, image: null });
+      setNewPost({ ...newPost, imageUrl: null });
       setSelectedFileName("");
     }
   };
 
-  const handleRating = (postIndex) => {
-    const updatedPosts = [...posts];
-    updatedPosts[postIndex] = {
-      ...updatedPosts[postIndex],
-      rating: updatedPosts[postIndex].rating + 1,
-    };
-    setPosts(updatedPosts);
+  // --- Handling Rating ---
+  const handleRating = async (scriptId, ratingValue, postIndex) => {
+    if (!isLoggedIn || !user?._id) {
+      toast.error("Please log in to rate posts");
+      navigate("/login", {
+        state: { redirectTo: window.location.pathname },
+      });
+      return;
+    }
+
+    const userId = user._id; // Get user ID from the global user object
+
+    if (!scriptId || ratingValue === undefined || !userId) {
+      console.error("Invalid rating parameters:", {
+        scriptId,
+        ratingValue,
+        userId,
+      });
+      toast.error("Invalid rating data provided.");
+      return;
+    }
+
+    // Determine which list of posts to update (allPosts or myPosts)
+    const currentPosts = activeCategory === "all" ? allPosts : myPosts;
+    const setPostsFunction = activeCategory === "all" ? setAllPosts : setMyPosts;
+
+    // Find the original post to get its current ratingCount
+    const postToUpdate = currentPosts[postIndex];
+
+    if (!postToUpdate) {
+        console.error("Post not found for optimistic update at index:", postIndex);
+        toast.error("Could not find post to update.");
+        return;
+    }
+
+    // Optimistic UI update
+    setPostsFunction((prevPosts) => {
+      const updatedPosts = [...prevPosts];
+      updatedPosts[postIndex] = {
+        ...updatedPosts[postIndex],
+        ratingCount: updatedPosts[postIndex].ratingCount + 1, // Increment ratingCount
+      };
+      return updatedPosts;
+    });
+
+    try {
+      const { success, error } = await addOrUpdateRating(
+        scriptId,
+        ratingValue,
+        userId
+      );
+
+      if (!success) {
+        // Revert optimistic update if API call fails
+        setPostsFunction((prevPosts) => {
+          const revertedPosts = [...prevPosts];
+          revertedPosts[postIndex] = {
+            ...revertedPosts[postIndex],
+            ratingCount: revertedPosts[postIndex].ratingCount - 1, // Decrement ratingCount
+          };
+          return revertedPosts;
+        });
+        toast.error(error || "Failed to update rating.");
+      } else {
+        // On success, refresh the data to get the actual updated rating count from the backend
+        // (This also ensures other users' ratings are reflected)
+        await getScripts();
+        if (isLoggedIn) {
+          await getUserScripts();
+        }
+        toast.success("Rating updated successfully!");
+      }
+    } catch (error) {
+      console.error("Rating Handler Error:", error);
+      toast.error("An unexpected error occurred while processing your rating");
+
+      // Revert optimistic update on unexpected errors
+      setPostsFunction((prevPosts) => {
+        const revertedPosts = [...prevPosts];
+        revertedPosts[postIndex] = {
+          ...revertedPosts[postIndex],
+          ratingCount: revertedPosts[postIndex].ratingCount - 1, // Decrement ratingCount
+        };
+        return revertedPosts;
+      });
+    }
   };
+
+  const displayedPosts = activeCategory === "all" ? allPosts : myPosts;
 
   return (
     <PageTransition>
@@ -128,13 +265,13 @@ const Discussion = () => {
                   <form onSubmit={handlePostSubmit}>
                     <div className="flex items-center mb-4">
                       <img
-                        src={user.profileImage.url}
+                        src={user?.profileImage?.url} 
                         alt="Your avatar"
                         className="w-12 h-12 rounded-full"
                       />
                       <div className="ml-4">
                         <h3 className="font-semibold text-gray-800">
-                          {user.fullname}
+                          {user?.fullname} {/* Use optional chaining */}
                         </h3>
                         <p className="text-sm text-gray-500">
                           Share your thoughts
@@ -153,9 +290,9 @@ const Discussion = () => {
                     <textarea
                       placeholder="What's on your mind?"
                       className="w-full mb-4 p-3 border rounded-lg min-h-[120px]"
-                      value={newPost.content}
+                      value={newPost.description}
                       onChange={(e) =>
-                        setNewPost({ ...newPost, content: e.target.value })
+                        setNewPost({ ...newPost, description: e.target.value })
                       }
                     />
                     <div className="flex flex-col gap-3">
@@ -188,7 +325,7 @@ const Discussion = () => {
               </div>
             ) : (
               <button
-                type="submit"
+                type="button" // Changed to type="button"
                 onClick={() =>
                   navigate("/login", {
                     state: {
@@ -205,89 +342,54 @@ const Discussion = () => {
 
             {/* Categories */}
             <div className="flex flex-wrap gap-4 mb-8">
-              {categories.map((category) => (
+              <button
+                key="all"
+                onClick={() => setActiveCategory("all")}
+                className={`px-6 py-2 rounded-lg font-medium ${
+                  activeCategory === "all"
+                    ? "bg-teal-600 text-white"
+                    : "bg-white text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                All Posts
+              </button>
+
+              {isLoggedIn && (
                 <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
+                  key="my-posts"
+                  onClick={() => setActiveCategory("my-posts")}
                   className={`px-6 py-2 rounded-lg font-medium ${
-                    activeCategory === category.id
+                    activeCategory === "my-posts"
                       ? "bg-teal-600 text-white"
                       : "bg-white text-gray-600 hover:bg-gray-50"
                   }`}
                 >
-                  {category.name}
+                  My Posts
                 </button>
-              ))}
+              )}
             </div>
 
             {/* Discussion Posts */}
             <StaggerContainer>
-              <div className="space-y-8">
-                {posts && posts.length > 0 ? (
-                  posts
-                    .filter(
-                      (post) =>
-                        activeCategory === "all" ||
-                        post.category === activeCategory
-                    )
-                    .map((post, index) => (
-                      <StaggerItem key={index}>
-                        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                          <div className="p-6">
-                            {/* Author Info */}
-                            <div className="flex items-center mb-4">
-                              <img
-                                src={post.author.avatar}
-                                alt={post.author.name}
-                                className="w-12 h-12 rounded-full"
-                              />
-                              <div className="ml-4">
-                                <h3 className="font-semibold text-gray-800">
-                                  {post.author.name}
-                                </h3>
-                                <p className="text-sm text-gray-500">
-                                  {post.author.title} • {post.date}
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Post Content */}
-                            <h2 className="text-xl font-bold text-gray-800 mb-4">
-                              {post.title}
-                            </h2>
-                            <p className="text-gray-600 mb-6">{post.content}</p>
-
-                            {/* Post Image */}
-                            {post.image && (
-                              <div className="mb-6">
-                                <img
-                                  src={post.image}
-                                  alt={post.title}
-                                  className="w-full h-[300px] object-cover rounded-lg"
-                                />
-                              </div>
-                            )}
-
-                            {/* Rating Button */}
-                            <div className="flex items-center pt-4 border-t">
-                              <button
-                                className="flex items-center gap-2 text-gray-500 hover:text-yellow-500"
-                                onClick={() => handleRating(index)}
-                              >
-                                <AiFillStar className="text-yellow-500" />
-                                <span>Rating: {post.rating}</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </StaggerItem>
-                    ))
-                ) : (
-                  <div className="text-center text-gray-500">
-                    No posts available in this category
-                  </div>
-                )}
-              </div>
+              {displayedPosts && displayedPosts.length > 0 ? (
+                <div className="space-y-8">
+                  {displayedPosts.map((script, index) => (
+                    <PostCard
+                      key={script._id} // Use unique ID for key
+                      post={script}
+                      index={index}
+                      handleRating={(scriptId, ratingValue) =>
+                        handleRating(scriptId, ratingValue, index)
+                      }
+                      userDetails={user} // Pass user details for display if post.user is not available
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center text-gray-500">
+                  No posts available in this category.
+                </div>
+              )}
             </StaggerContainer>
           </div>
         </section>

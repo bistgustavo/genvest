@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import InsightsSection from "../InsightsSection.jsx";
 import { motion } from "framer-motion";
 import {
@@ -40,12 +40,12 @@ const Home = () => {
                   </SlideUp>
                   <SlideUp delay={0.4}>
                     <div className="flex flex-wrap gap-4">
-                      <button
-                        onClick={() => navigate("/insights")}
-                        className="px-8 py-3 bg-[#CB9C30] text-white rounded-lg hover:bg-[#CB9C30]/80 transition-all font-medium cursor-pointer"
+                      <NavLink
+                        to="/insights"
+                        className="inline-block px-8 py-3 bg-[#CB9C30] text-white rounded-lg hover:bg-[#CB9C30]/80 transition-all font-medium cursor-pointer z-10 relative"
                       >
                         View Insights
-                      </button>
+                      </NavLink>
                     </div>
                   </SlideUp>
                 </div>

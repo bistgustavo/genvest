@@ -49,7 +49,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link onClick={scroll} to="/" className="flex items-center">
-            <img src={assets.logo} alt="Genvest Logo" className="h-10 w-auto" />
+            <img src={assets.logo} alt="Genvest Logo" className="h-20 w-auto" />
             <span className="ml-2 text-2xl font-bold text-[#0D4E4A]">
               Genvest
             </span>

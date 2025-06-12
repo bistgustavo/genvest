@@ -1,4 +1,4 @@
-import logo from "./logo.png";
+import logo from "./logo.jpg";
 import investment from "./investment.png";
 import tabLogo from "./tab.png";
 // Import all team member images
