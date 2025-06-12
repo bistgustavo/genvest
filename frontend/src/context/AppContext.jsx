@@ -328,6 +328,7 @@ export const AppContexProvider = ({ children }) => {
     user,
     isAuthenticated,
     isLoading,
+    setIsLoading,
     login,
     logout,
     register,
