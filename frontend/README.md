@@ -62,7 +62,6 @@ frontend/
 │   ├── components/    # Reusable React components
 │   ├── pages/         # Page components
 │   ├── services/      # API services
-│   ├── utils/         # Utility functions
 │   ├── App.jsx        # Root component
 │   └── main.jsx      # Entry point
 ├── public/           # Public assets

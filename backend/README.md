@@ -56,10 +56,10 @@ The server will be available at `http://localhost:3000`
 
 ### Authentication Endpoints
 
-- POST `/api/auth/register` - Register a new user
-- POST `/api/auth/login` - User login
-- POST `/api/auth/forgot-password` - Password reset request
-- POST `/api/auth/reset-password` - Reset password
+- POST `/api/users/register` - Register a new user
+- POST `/api/users/login` - User login
+- POST `/api/users/forgot-password` - Password reset request
+- POST `/api/users/reset-password` - Reset password
 
 ### User Endpoints
 
@@ -67,23 +67,11 @@ The server will be available at `http://localhost:3000`
 - PUT `/api/users/profile` - Update user profile
 - PUT `/api/users/change-password` - Change password
 
-### Market Data Endpoints
-
-- GET `/api/market/live-data` - Get live market data
-- GET `/api/market/historical-data` - Get historical market data
-- GET `/api/market/indicators` - Get market indicators
-
-### Contact Endpoints
-
-- POST `/api/contact/submit` - Submit contact form
-- GET `/api/contact/inquiries` - Get contact inquiries (admin only)
-
 ## Project Structure
 
 ```
 backend/
 ├── src/
-│   ├── config/        # Configuration files
 │   ├── controllers/   # Request handlers
 │   ├── middleware/    # Custom middleware
 │   ├── models/        # Database models
